@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Load data from an external GeoJSON file</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.js"></script>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoiamNyaXRjaGxleSIsImEiOiIyZEU3dzdFIn0.gUdlGYUAAseVj0-pDzzNvQ';
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/mapbox/satellite-v9', // style URL
+        zoom: 3, // starting zoom
+        center: [-95.067175, 53.483794] // starting center
+    });
+
+    map.on('load', () => {
+        map.addSource('indigenousTreaties-modern', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'https://raw.githubusercontent.com/jcritchley/Data/master/indigenous_lands/Traite_moderne_Modern_Treaty-mapshaper.json'
+        });
+
+        map.addLayer({
+            'id': 'indigenousTreaties-modern-layer',
+            'type': 'fill',
+            'source': 'indigenousTreaties-modern',
+            'paint': {
+                'fill-color': 'red',
+                'fill-opacity': 0.5
+            }
+        });
+
+        map.addSource('indigenousTreaties-pre1975', {
+            type: 'geojson',
+            // Use a URL for the value for the `data` property.
+            data: 'https://raw.githubusercontent.com/jcritchley/Data/master/indigenous_lands/Traite_Pre_1975_Treaty-mapshaper.json'
+        });
+
+        map.addLayer({
+            'id': 'indigenousTreaties-pre1975-layer',
+            'type': 'fill',
+            'source': 'indigenousTreaties-pre1975',
+            'paint': {
+                'fill-color': 'yellow',
+                'fill-opacity': 0.5
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
